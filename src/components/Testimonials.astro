@@ -1,0 +1,86 @@
+---
+interface Quote {
+  quote: string;
+  name: string;
+  role: string;
+  agency: string;
+}
+
+const featured: Quote = {
+  quote:
+    'We caught a 3-second LCP regression on a retail client’s product pages four days before their Black Friday sale. The alert named the exact image. That one fix covered our Loadline bill for years.',
+  name: 'Dana Okafor',
+  role: 'Founder',
+  agency: 'Northfold Studio',
+};
+
+const others: Quote[] = [
+  {
+    quote:
+      'We manage 140 WordPress sites. A plugin update broke CLS on 22 of them overnight, and Loadline had the list in Slack by 7 a.m.',
+    name: 'Priya Raman',
+    role: 'Technical director',
+    agency: 'Halden Studio',
+  },
+  {
+    quote:
+      'Our monthly reports used to take a junior designer two days to assemble. Now they go out on the 1st with our logo, and clients actually read them.',
+    name: 'Mateo Ruiz',
+    role: 'Head of operations',
+    agency: 'Oxbow Digital',
+  },
+];
+
+const initials = (name: string) =>
+  name
+    .split(' ')
+    .map((part) => part[0])
+    .join('');
+---
+
+<section aria-labelledby="testimonials-title" class="defer-render wrap py-24 lg:py-32" style="--cis: 970px; --cis-md: 780px; --cis-lg: 580px">
+  <h2 id="testimonials-title" class="max-w-[18ch] text-title">Agencies that stopped hearing it from clients.</h2>
+
+  <div class="mt-16 grid grid-cols-1 gap-x-16 gap-y-12 lg:grid-cols-12">
+    <figure class="lg:col-span-7">
+      <blockquote class="text-[clamp(1.375rem,1.1rem+1.1vw,1.875rem)] leading-[1.35] font-medium tracking-[-0.02em]">
+        <p>“{featured.quote}”</p>
+      </blockquote>
+      <figcaption class="mt-8 flex items-center gap-4">
+        <span class="grid size-12 place-items-center rounded-full bg-ink text-sm font-semibold text-canvas" aria-hidden="true">
+          {initials(featured.name)}
+        </span>
+        <span>
+          <span class="block font-semibold">{featured.name}</span>
+          <span class="block text-sm text-muted">{featured.role}, {featured.agency}</span>
+        </span>
+      </figcaption>
+    </figure>
+
+    <div class="divide-y divide-line border-t border-line lg:col-span-4 lg:col-start-9 lg:border-t-0">
+      {
+        others.map((q) => (
+          <figure class="py-8 first:pt-8 lg:first:pt-0">
+            <blockquote class="text-[1.0625rem] leading-relaxed">
+              <p>“{q.quote}”</p>
+            </blockquote>
+            <figcaption class="mt-5 flex items-center gap-3">
+              <span
+                class="grid size-9 place-items-center rounded-full border border-line-strong text-xs font-semibold"
+                aria-hidden="true"
+              >
+                {initials(q.name)}
+              </span>
+              <span class="text-sm">
+                <span class="block font-semibold">{q.name}</span>
+                <span class="block text-muted">
+                  {q.role}, {q.agency}
+                </span>
+              </span>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </div>
+</section>

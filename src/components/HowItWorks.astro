@@ -1,0 +1,48 @@
+---
+const steps = [
+  {
+    title: 'Add your client sites',
+    body: 'Paste a list of URLs or import a CSV. Pick the pages that matter for each client, like home, pricing and checkout.',
+  },
+  {
+    title: 'Loadline checks them daily',
+    body: 'Every morning each page is loaded on mobile and desktop, three times, and compared with its last seven days.',
+  },
+  {
+    title: 'Get alerts and send reports',
+    body: 'Regressions go to Slack or email with the likely cause. Reports go out on the first of the month with your branding.',
+  },
+];
+---
+
+<section id="how-it-works" aria-labelledby="how-title" class="defer-render wrap py-24 lg:py-32" style="--cis: 760px; --cis-md: 490px; --cis-lg: 360px">
+  <div class="grid grid-cols-1 gap-x-16 gap-y-5 lg:grid-cols-12 lg:items-end">
+    <h2 id="how-title" class="max-w-[16ch] text-title lg:col-span-6">From sign-up to first check in five minutes.</h2>
+    <p class="max-w-md text-muted lg:col-span-5 lg:col-start-8">
+      No scripts to install on client sites and nothing for their developers to approve. Loadline only needs the URL.
+    </p>
+  </div>
+
+  <ol class="mt-16 grid grid-cols-1 gap-y-10 md:grid-cols-3 md:gap-x-10">
+    {
+      steps.map((step, i) => (
+        <li class="relative grid grid-cols-[2.5rem_1fr] gap-x-5 md:block">
+          {/* Connector: vertical on mobile, horizontal from md up. Hidden after the last step. */}
+          {i < steps.length - 1 && (
+            <span
+              class="absolute top-12 bottom-[-2.5rem] left-5 w-px bg-line-strong md:top-5 md:right-[-2.5rem] md:bottom-auto md:left-14 md:h-px md:w-auto"
+              aria-hidden="true"
+            />
+          )}
+          <span class="relative grid size-10 place-items-center rounded-full border border-ink bg-canvas text-[0.9375rem] font-semibold tnum">
+            {i + 1}
+          </span>
+          <div class="md:mt-7">
+            <h3 class="pt-1.5 text-heading md:pt-0">{step.title}</h3>
+            <p class="mt-2 text-muted">{step.body}</p>
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>

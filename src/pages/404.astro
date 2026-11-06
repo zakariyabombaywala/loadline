@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<BaseLayout title="Page not found · Loadline" description="This page doesn't exist." noindex>
+  <Header />
+  <main id="main" class="wrap py-24 sm:py-32">
+    <p class="text-sm text-muted tnum">Error 404</p>
+    <h1 class="mt-3 max-w-[16ch] text-title">This page isn’t live.</h1>
+    <p class="mt-5 max-w-xl text-lead text-muted">
+      Loadline is a concept project, so sign-up, log-in and some company pages don’t exist. Everything worth seeing is on the
+      homepage, including a working speed check.
+    </p>
+    <div class="mt-9 flex flex-col gap-3 sm:flex-row">
+      <a href="/" class="btn btn-primary">Back to the homepage</a>
+      <a href="/#pricing" class="btn btn-secondary">See pricing</a>
+    </div>
+  </main>
+  <Footer />
+</BaseLayout>

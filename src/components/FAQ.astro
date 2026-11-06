@@ -1,0 +1,67 @@
+---
+const faqs = [
+  {
+    q: 'How accurate is the data?',
+    a: 'Each check loads the page in a real Chrome browser on a throttled 4G mobile connection and on desktop. We run three loads per page and keep the median, so one noisy result never triggers an alert. INP needs real interactions, so we use Google’s Chrome UX Report field data where a site has it, and a scripted interaction test where it doesn’t.',
+  },
+  {
+    q: 'How do alerts work?',
+    a: 'After each daily check, Loadline compares the results with that page’s 7-day baseline. If a metric crosses a threshold you set, or moves from good to needs work, you get one alert in Slack or email with the page, the change and the likely cause. Repeat alerts for the same issue are grouped, not resent.',
+  },
+  {
+    q: 'Can reports carry our agency’s branding?',
+    a: 'Yes. On Agency and Scale, reports use your logo, colors and sender name, with no mention of Loadline. Scale also serves report links from your own domain, like reports.youragency.com. Starter reports are clean but carry a small Loadline footer.',
+  },
+  {
+    q: 'Can we cancel at any time?',
+    a: 'Yes. Cancel from billing settings in two clicks, with no call required. Monthly plans run to the end of the paid period. Yearly plans are refunded for unused full months. Your history stays available to export for 30 days.',
+  },
+  {
+    q: 'Can I add my team?',
+    a: 'Yes. Invite teammates by email and choose who can edit sites, manage alerts or only view reports. Starter includes 2 seats, Agency 10, and Scale has no limit.',
+  },
+  {
+    q: 'Which sites are supported?',
+    a: 'Any public website: WordPress, Shopify, Webflow, Squarespace, headless builds and single-page apps. Nothing needs to be installed on the site. Pages behind a login can be checked on Scale using a test account you provide.',
+  },
+];
+---
+
+<section id="faq" aria-labelledby="faq-title" class="defer-render border-t border-line" style="--cis: 810px; --cis-md: 730px; --cis-lg: 670px">
+  <div class="wrap grid grid-cols-1 gap-x-16 gap-y-10 py-24 lg:grid-cols-12 lg:py-32">
+    <div class="lg:col-span-4">
+      <h2 id="faq-title" class="text-title">Questions agencies ask first</h2>
+      <p class="mt-5 text-muted">
+        Something else? <a class="link" href="/contact">Get in touch</a> and a person replies
+        within one working day.
+      </p>
+    </div>
+
+    <div class="border-b border-line lg:col-span-7 lg:col-start-6">
+      {
+        faqs.map((item) => (
+          <details class="faq group border-t border-line">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 py-5 text-[1.0625rem] font-semibold">
+              <h3>{item.q}</h3>
+              <svg
+                class="size-4 shrink-0 text-muted transition-transform duration-200 group-open:rotate-45"
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden="true"
+              >
+                <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+              </svg>
+            </summary>
+            <p class="max-w-[40rem] pb-6 text-muted">{item.a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq summary::-webkit-details-marker {
+    display: none;
+  }
+</style>

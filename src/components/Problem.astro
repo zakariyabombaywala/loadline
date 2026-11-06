@@ -1,0 +1,59 @@
+---
+const costs = [
+  {
+    title: 'The client notices first.',
+    body: 'A slow homepage gets mentioned on a status call, not caught by a tool. By then it has been slow for weeks, and you look like you weren’t watching.',
+  },
+  {
+    title: 'Rankings slip quietly.',
+    body: 'Google uses Core Web Vitals in search. A regression on Tuesday is lost traffic by the end of the month, and nobody can say what changed.',
+  },
+  {
+    title: 'Every fix becomes a fire drill.',
+    body: 'Without a record of when it got slow, your team spends the afternoon guessing which deploy, plugin or image caused it.',
+  },
+];
+
+const timeline = [
+  { time: 'Tue 09:14', text: 'Marketing uploads a new hero image' },
+  { time: 'Tue 09:15', text: 'Mobile LCP goes from 1.9 s to ', value: '4.6 s' },
+  { time: 'Fri 16:52', text: 'Client emails: “Is the site slow for you too?”' },
+];
+---
+
+<section aria-labelledby="problem-title" class="defer-render wrap py-24 lg:py-32" style="--cis: 1000px; --cis-md: 840px; --cis-lg: 520px">
+  <div class="grid grid-cols-1 gap-x-16 gap-y-14 lg:grid-cols-12">
+    <div class="lg:col-span-5">
+      <h2 id="problem-title" class="max-w-[14ch] text-title">Slow sites don’t send alerts. Clients do.</h2>
+
+      <figure class="mt-12 max-w-md">
+        <figcaption class="text-sm text-muted">How it usually goes</figcaption>
+        <ol class="mt-4 border-l border-line-strong">
+          {
+            timeline.map((item) => (
+              <li class="relative pb-5 pl-6 last:pb-0">
+                <span class="absolute top-[0.55rem] -left-[4.5px] size-2 rounded-full bg-line-strong" aria-hidden="true" />
+                <span class="block text-sm text-muted tnum">{item.time}</span>
+                <span class="block">
+                  {item.text}
+                  {item.value && <strong class="font-semibold text-poor-text tnum">{item.value}</strong>}
+                </span>
+              </li>
+            ))
+          }
+        </ol>
+      </figure>
+    </div>
+
+    <div class="lg:col-span-6 lg:col-start-7">
+      {
+        costs.map((cost) => (
+          <div class="border-t border-line py-8 first:pt-0 first:border-t-0 lg:first:border-t lg:first:pt-8">
+            <h3 class="text-heading">{cost.title}</h3>
+            <p class="mt-2 max-w-prose text-muted">{cost.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,97 @@
+---
+/**
+ * 30-day LCP history for one page, mobile and desktop, with the "good" threshold
+ * and a regression that was caught and fixed. Pure SVG, computed at build time.
+ *
+ * Two geometries are rendered: a narrow one for phones and a wide one from `sm` up,
+ * so labels stay at a readable size instead of scaling down with the viewBox.
+ */
+const mobile = [
+  1.9, 2.0, 1.8, 1.9, 2.1, 1.9, 2.0, 1.8, 1.9, 2.0, 2.1, 1.9, 1.8, 2.0, 1.9, 2.0, 1.9, 2.1, 1.9, 2.0, 2.0, 4.1, 4.0,
+  2.6, 1.9, 1.8, 1.9, 2.0, 1.8, 1.9,
+];
+const desktop = [
+  1.1, 1.1, 1.0, 1.1, 1.2, 1.1, 1.1, 1.0, 1.1, 1.1, 1.2, 1.1, 1.0, 1.1, 1.1, 1.1, 1.0, 1.2, 1.1, 1.1, 1.1, 2.2, 2.1,
+  1.4, 1.1, 1.0, 1.1, 1.1, 1.0, 1.1,
+];
+
+const yMax = 5;
+const spike = mobile.indexOf(Math.max(...mobile));
+const fixed = spike + 3;
+const ticks = [0, 2.5, 5];
+const days = [
+  { i: 0, label: 'Oct 1', anchor: 'start' },
+  { i: 14, label: 'Oct 15', anchor: 'middle' },
+  { i: 29, label: 'Oct 30', anchor: 'end' },
+] as const;
+
+function layout(W: number, H: number) {
+  const plot = { left: 34, right: W - 6, top: 14, bottom: H - 30 };
+  const x = (i: number) => plot.left + (i / (mobile.length - 1)) * (plot.right - plot.left);
+  const y = (v: number) => plot.bottom - (v / yMax) * (plot.bottom - plot.top);
+  const line = (series: number[]) => series.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join('');
+  return { W, H, plot, x, y, mobileLine: line(mobile), desktopLine: line(desktop) };
+}
+
+const charts = [
+  { ...layout(300, 200), class: 'sm:hidden' },
+  { ...layout(480, 220), class: 'hidden sm:block' },
+];
+---
+
+<div
+  class="rounded-[var(--radius-card)] border border-line bg-surface p-5 shadow-card sm:p-6"
+  role="img"
+  aria-label="Chart of mobile and desktop LCP over 30 days. Mobile LCP stays near 1.9 seconds, jumps to 4.1 seconds on October 22, and returns to 1.9 seconds two days later."
+>
+  <div class="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-2 text-sm">
+    <p><span class="font-semibold">brightwaterdental.com/pricing</span> <span class="text-muted">· LCP, 30 days</span></p>
+    <p class="flex gap-4 text-muted">
+      <span class="inline-flex items-center gap-1.5"><span class="h-0.5 w-4 rounded bg-ink"></span>Mobile</span>
+      <span class="inline-flex items-center gap-1.5"><span class="h-0.5 w-4 rounded bg-line-strong"></span>Desktop</span>
+    </p>
+  </div>
+
+  {
+    charts.map(({ W, H, plot, x, y, mobileLine, desktopLine, class: cls }) => (
+      <svg class={`mt-4 h-auto w-full overflow-visible ${cls}`} viewBox={`0 0 ${W} ${H}`} aria-hidden="true">
+        {ticks.map((t) => (
+          <g>
+            <line
+              x1={plot.left}
+              x2={plot.right}
+              y1={y(t)}
+              y2={y(t)}
+              stroke="var(--color-line)"
+              stroke-dasharray={t === 2.5 ? '4 4' : undefined}
+            />
+            <text x={plot.left - 8} y={y(t) + 4} text-anchor="end" class="fill-muted text-[11px] tnum">
+              {t}s
+            </text>
+          </g>
+        ))}
+        <text x={plot.left + 4} y={y(2.5) - 6} class="fill-muted text-[11px]">
+          Good up to 2.5 s
+        </text>
+
+        <path d={desktopLine} fill="none" stroke="var(--color-line-strong)" stroke-width="2" stroke-linejoin="round" />
+        <path d={mobileLine} fill="none" stroke="var(--color-ink)" stroke-width="2" stroke-linejoin="round" />
+
+        <circle cx={x(spike)} cy={y(mobile[spike]!)} r="5" fill="var(--color-poor)" stroke="var(--color-surface)" stroke-width="2.5" />
+        <text x={x(spike) - 10} y={y(mobile[spike]!) + 4} text-anchor="end" class="fill-ink text-[12px] font-semibold tnum">
+          Oct 22 · 4.1 s
+        </text>
+        <circle cx={x(fixed)} cy={y(mobile[fixed]!)} r="4" fill="var(--color-good)" stroke="var(--color-surface)" stroke-width="2.5" />
+        <text x={plot.right} y={y(mobile[fixed]!) + 22} text-anchor="end" class="fill-muted text-[11px]">
+          Fixed Oct 24
+        </text>
+
+        {days.map((d) => (
+          <text x={x(d.i)} y={H - 8} text-anchor={d.anchor} class="fill-muted text-[11px]">
+            {d.label}
+          </text>
+        ))}
+      </svg>
+    ))
+  }
+</div>

@@ -1,0 +1,61 @@
+---
+import { site } from '../lib/site';
+---
+
+<section aria-labelledby="cta-title" class="defer-render cta-band" style="--cis: 480px; --cis-lg: 450px">
+  <div class="wrap grid grid-cols-1 gap-x-16 gap-y-10 py-24 lg:grid-cols-12 lg:items-end lg:py-32">
+    <div class="lg:col-span-8">
+      <h2 id="cta-title" class="max-w-[16ch] text-title">Stop finding out from your clients.</h2>
+      <p class="cta-muted mt-5 max-w-xl text-lead">
+        Add your first ten sites in five minutes. Tomorrow morning you’ll know which ones need you, and which ones don’t.
+      </p>
+    </div>
+    <div class="lg:col-span-4 lg:justify-self-end">
+      <a href={site.signupHref} class="btn cta-btn">Start your 14-day free trial</a>
+      <p class="cta-muted mt-3 text-sm">No card required. Cancel anytime.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Light mode: an inverted ink band with a canvas button. */
+  .cta-band {
+    background-color: var(--color-ink);
+    color: var(--color-canvas);
+  }
+  .cta-muted {
+    color: color-mix(in oklab, var(--color-canvas) 78%, var(--color-ink));
+  }
+  .cta-btn {
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
+  }
+  .cta-btn:hover {
+    background-color: color-mix(in oklab, var(--color-canvas) 88%, var(--color-ink));
+  }
+  .cta-btn:focus-visible {
+    outline-color: var(--color-canvas);
+  }
+
+  /* Dark mode: inverting would create a bright slab, so the band lifts one surface step instead. */
+  @media (prefers-color-scheme: dark) {
+    .cta-band {
+      background-color: var(--color-surface);
+      color: var(--color-ink);
+      border-block: 1px solid var(--color-line);
+    }
+    .cta-muted {
+      color: var(--color-muted);
+    }
+    .cta-btn {
+      background-color: var(--color-accent-strong);
+      color: var(--color-on-accent);
+    }
+    .cta-btn:hover {
+      background-color: color-mix(in oklab, var(--color-accent-strong) 86%, var(--color-ink));
+    }
+    .cta-btn:focus-visible {
+      outline-color: var(--color-ink);
+    }
+  }
+</style>

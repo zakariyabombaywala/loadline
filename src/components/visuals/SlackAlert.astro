@@ -1,0 +1,59 @@
+---
+/** A chat-style alert message, as it would land in an agency's alerts channel. */
+---
+
+<div
+  class="overflow-hidden rounded-[var(--radius-card)] border border-line bg-surface shadow-card"
+  role="img"
+  aria-label="Example Slack alert from Loadline: speed dropped on brightwaterdental.com/pricing. Mobile LCP went from 1.8 to 4.1 seconds. Likely cause: hero image grew from 180 KB to 2.4 MB."
+>
+  <div class="flex items-center gap-2 border-b border-line px-5 py-3 text-sm">
+    <span class="font-semibold"># client-alerts</span>
+    <span class="text-muted">· 12 members</span>
+  </div>
+
+  <div class="flex gap-3 px-5 py-5">
+    <span class="grid size-9 shrink-0 place-items-center rounded-lg bg-ink" aria-hidden="true">
+      <svg class="h-5 w-4" viewBox="0 0 16 20">
+        <path d="M5 2.5V17.5" stroke="var(--color-canvas)" stroke-width="2.6" stroke-linecap="round" />
+        <circle cx="11.5" cy="15.5" r="2.4" fill="var(--color-accent)" />
+      </svg>
+    </span>
+
+    <div class="min-w-0 flex-1 text-[0.9375rem]">
+      <p class="flex flex-wrap items-baseline gap-x-2">
+        <span class="font-semibold">Loadline</span>
+        <span class="rounded bg-sunken px-1 text-[0.6875rem] font-semibold text-muted">APP</span>
+        <span class="text-xs text-muted tnum">7:02 AM</span>
+      </p>
+      <p class="mt-1">
+        Speed dropped on <span class="font-semibold">brightwaterdental.com<wbr />/pricing</span>
+      </p>
+
+      <div class="mt-3 border-l-[3px] border-poor pl-4">
+        <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
+          <dt class="text-muted">LCP, mobile</dt>
+          <dd class="tnum">
+            <span class="inline-flex items-center gap-1 whitespace-nowrap">
+              1.8 s
+              <svg class="size-3 text-muted" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                <path d="M2 6h8m-3-3 3 3-3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="font-semibold text-poor-text">4.1 s</span>
+            </span>
+            <span class="whitespace-nowrap text-muted">(poor)</span>
+          </dd>
+          <dt class="text-muted">Likely cause</dt>
+          <dd>Hero image grew from 180 KB to 2.4 MB</dd>
+          <dt class="text-muted">First seen</dt>
+          <dd class="tnum">Today, 07:00 check</dd>
+        </dl>
+      </div>
+
+      <div class="mt-4 flex flex-wrap gap-2 text-sm font-medium">
+        <span class="rounded-md border border-line-strong px-3 py-1.5">Open report</span>
+        <span class="rounded-md border border-line-strong px-3 py-1.5 text-muted">Mute for 24 h</span>
+      </div>
+    </div>
+  </div>
+</div>

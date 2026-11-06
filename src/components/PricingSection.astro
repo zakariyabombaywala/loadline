@@ -1,0 +1,20 @@
+---
+import Pricing from './Pricing.tsx';
+import { site } from '../lib/site';
+---
+
+<section id="pricing" aria-labelledby="pricing-title" class="defer-render border-t border-line bg-surface/50" style="--cis: 2640px; --cis-md: 2490px; --cis-lg: 1260px">
+  <div class="wrap py-24 lg:py-32">
+    <div class="grid grid-cols-1 gap-x-16 gap-y-5 lg:grid-cols-12 lg:items-end">
+      <h2 id="pricing-title" class="text-title lg:col-span-6">Priced per portfolio, not per check.</h2>
+      <p class="max-w-md text-muted lg:col-span-5 lg:col-start-8">
+        Every plan includes daily checks, alerts with likely causes and monthly reports. Try any plan free for 14 days, no card
+        required.
+      </p>
+    </div>
+
+    <div class="mt-14">
+      <Pricing client:visible signupHref={site.signupHref} />
+    </div>
+  </div>
+</section>

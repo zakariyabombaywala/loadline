@@ -1,0 +1,89 @@
+---
+import { METRICS, STATUS_LABEL, statusOf, type MetricKey, type Status } from '../../lib/metrics';
+
+/**
+ * The portfolio dashboard: every client site in one list, worst first.
+ * Rows are sorted at build time by the same status logic the product would use.
+ */
+interface Site {
+  host: string;
+  values: Record<MetricKey, number>;
+  change: string;
+}
+
+const sites: Site[] = [
+  { host: 'harborlinefitness.com', values: { lcp: 4.6, inp: 180, cls: 0.04 }, change: 'LCP +2.7 s since Tue' },
+  { host: 'oakandember.co', values: { lcp: 2.2, inp: 160, cls: 0.29 }, change: 'CLS +0.24 since Mon' },
+  { host: 'brightwaterdental.com', values: { lcp: 3.1, inp: 230, cls: 0.05 }, change: 'INP +60 ms this week' },
+  { host: 'mapleroofing.com', values: { lcp: 2.0, inp: 120, cls: 0.02 }, change: 'Steady' },
+  { host: 'thelinenroom.shop', values: { lcp: 1.7, inp: 90, cls: 0.01 }, change: 'LCP −0.4 s' },
+  { host: 'westpointlegal.com', values: { lcp: 1.4, inp: 70, cls: 0.0 }, change: 'Steady' },
+];
+
+const rank: Record<Status, number> = { poor: 2, warn: 1, good: 0 };
+const rows = sites
+  .map((s) => {
+    const statuses = METRICS.map((m) => statusOf(m, s.values[m.key]));
+    const worst = statuses.reduce((a, b) => (rank[b] > rank[a] ? b : a), 'good' as Status);
+    return { ...s, statuses, worst, score: statuses.reduce((n, st) => n + rank[st] * 10, 0) };
+  })
+  .sort((a, b) => rank[b.worst] - rank[a.worst] || b.score - a.score);
+
+const DOT: Record<Status, string> = { good: 'bg-good', warn: 'bg-warn', poor: 'bg-poor' };
+const TEXT: Record<Status, string> = { good: 'text-ink', warn: 'text-warn-text', poor: 'text-poor-text' };
+const attention = rows.filter((r) => r.worst !== 'good').length;
+---
+
+<div
+  class="overflow-hidden rounded-[var(--radius-card)] border border-line bg-surface shadow-card"
+  role="img"
+  aria-label={`Example dashboard listing ${rows.length} client sites, sorted so the ${attention} that need attention come first. harborlinefitness.com is at the top with poor LCP.`}
+>
+  <div class="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-5 py-3.5 text-sm">
+    <p><span class="font-semibold">All sites</span> <span class="text-muted">· sorted by attention needed</span></p>
+    <p class="text-muted tnum">{attention} of {rows.length} need attention</p>
+  </div>
+
+  <!-- Phones show the site and its worst metric; wider screens show every metric and the change. -->
+  <table class="w-full table-fixed text-left text-sm sm:table-auto">
+    <thead class="text-xs text-muted">
+      <tr>
+        <th class="w-[62%] px-4 py-2.5 font-normal sm:w-auto sm:px-5">Site</th>
+        <th class="px-4 py-2.5 text-right font-normal sm:hidden">Worst metric</th>
+        {METRICS.map((m) => <th class="hidden px-3 py-2.5 text-right font-normal sm:table-cell">{m.label}</th>)}
+        <th class="hidden px-5 py-2.5 font-normal md:table-cell">Change</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-line border-t border-line">
+      {
+        rows.map((row) => {
+          const worstIndex = row.statuses.indexOf(row.worst);
+          const worstMetric = METRICS[worstIndex]!;
+          return (
+            <tr>
+              <td class="px-4 py-3 sm:px-5">
+                <span class="flex min-w-0 items-center gap-2.5">
+                  <span class={`size-2 shrink-0 rounded-full ${DOT[row.worst]}`} title={STATUS_LABEL[row.worst]} />
+                  <span class="truncate font-medium">{row.host}</span>
+                </span>
+              </td>
+              <td class={`px-4 py-3 text-right whitespace-nowrap tnum sm:hidden ${TEXT[row.worst]}`}>
+                {row.worst === 'good' ? (
+                  <span class="text-muted">All good</span>
+                ) : (
+                  `${worstMetric.label} ${worstMetric.format(row.values[worstMetric.key])}`
+                )}
+              </td>
+              {METRICS.map((m, i) => (
+                <td class={`hidden px-3 py-3 text-right tnum sm:table-cell ${TEXT[row.statuses[i]!]}`}>
+                  {m.format(row.values[m.key])}
+                </td>
+              ))}
+              <td class="hidden px-5 py-3 text-muted tnum md:table-cell">{row.change}</td>
+            </tr>
+          );
+        })
+      }
+    </tbody>
+  </table>
+</div>

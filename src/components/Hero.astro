@@ -1,0 +1,26 @@
+---
+import SpeedDemo from './SpeedDemo.tsx';
+import { site } from '../lib/site';
+---
+
+<section aria-labelledby="hero-title" class="wrap pt-14 pb-20 sm:pt-20 lg:pt-24 lg:pb-28">
+  <div class="grid grid-cols-1 items-center gap-x-16 gap-y-14 lg:grid-cols-12">
+    <div class="lg:col-span-7">
+      <h1 id="hero-title" class="max-w-[13ch] text-display sm:max-w-[15ch]">
+        Know when a client’s site gets slow. <span class="block">Before they do.</span>
+      </h1>
+      <p class="mt-6 max-w-[34rem] text-lead text-muted">
+        Loadline checks every site you manage each day and alerts you the moment speed drops, with the likely cause.
+      </p>
+      <div class="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+        <a href={site.signupHref} class="btn btn-primary">Start your 14-day free trial</a>
+        <a href="#sample-report" class="btn btn-secondary">See a sample report</a>
+      </div>
+      <p class="mt-4 text-sm text-muted">No card required. Set up in 5 minutes.</p>
+    </div>
+
+    <div class="lg:col-span-5">
+      <SpeedDemo client:interaction />
+    </div>
+  </div>
+</section>

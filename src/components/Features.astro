@@ -1,0 +1,117 @@
+---
+import { Picture, getImage } from 'astro:assets';
+import TrendChart from './visuals/TrendChart.astro';
+import SlackAlert from './visuals/SlackAlert.astro';
+import ReportMini from './visuals/ReportMini.astro';
+import SiteList from './visuals/SiteList.astro';
+import sampleReport from '../assets/sample-report.png';
+
+// Full-resolution copy for anyone who wants to read the report closely, especially on phones.
+const fullReport = await getImage({ src: sampleReport, format: 'webp', width: 2400, quality: 80 });
+---
+
+<section id="features" aria-labelledby="features-title" class="defer-render border-t border-line bg-surface/50" style="--cis: 4120px; --cis-md: 3770px; --cis-lg: 3700px">
+  <div class="wrap py-24 lg:py-32">
+    <div class="max-w-2xl">
+      <h2 id="features-title" class="text-title">One place to watch every client site.</h2>
+      <p class="mt-5 text-lead text-muted">
+        Loadline does the daily checking, tells you what changed, and turns it into a report your client will actually read.
+      </p>
+    </div>
+
+    <div class="mt-20 space-y-24 lg:mt-28 lg:space-y-36">
+      <!-- Daily checks: text left, chart right -->
+      <article class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-4">
+          <h3 class="text-[1.625rem] leading-tight font-semibold tracking-[-0.025em]">Every site, checked every morning</h3>
+          <p class="mt-4 text-muted">
+            Loadline loads each page on a throttled mobile connection and on desktop, then records LCP, INP and CLS. You get a
+            clean daily history instead of a one-off test someone ran in March.
+          </p>
+          <ul class="mt-6 space-y-2 text-[0.9375rem]">
+            <li class="flex gap-3"><span class="mt-2.5 h-px w-3 shrink-0 bg-ink" aria-hidden="true"></span>Three runs per page; the median is kept</li>
+            <li class="flex gap-3"><span class="mt-2.5 h-px w-3 shrink-0 bg-ink" aria-hidden="true"></span>Google field data shown next to lab results</li>
+          </ul>
+        </div>
+        <div class="lg:col-span-7 lg:col-start-6">
+          <TrendChart />
+        </div>
+      </article>
+
+      <!-- Alerts: visual left, text right -->
+      <article class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:order-2 lg:col-span-4 lg:col-start-9">
+          <h3 class="text-[1.625rem] leading-tight font-semibold tracking-[-0.025em]">Alerts that say what changed</h3>
+          <p class="mt-4 text-muted">
+            When a page gets slower, Loadline posts to Slack or sends an email with the page, the numbers and the likely cause.
+            Your developer opens the alert and knows where to start.
+          </p>
+          <ul class="mt-6 space-y-2 text-[0.9375rem]">
+            <li class="flex gap-3"><span class="mt-2.5 h-px w-3 shrink-0 bg-ink" aria-hidden="true"></span>Compared with a 7-day baseline, not one noisy run</li>
+            <li class="flex gap-3"><span class="mt-2.5 h-px w-3 shrink-0 bg-ink" aria-hidden="true"></span>One alert per issue, never a flood</li>
+          </ul>
+        </div>
+        <div class="lg:order-1 lg:col-span-7 lg:col-start-1">
+          <SlackAlert />
+        </div>
+      </article>
+
+      <!-- Reports: text left, report right -->
+      <article class="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-16">
+        <div class="lg:col-span-4">
+          <h3 class="text-[1.625rem] leading-tight font-semibold tracking-[-0.025em]">Monthly reports with your name on them</h3>
+          <p class="mt-4 text-muted">
+            On the first of every month, Loadline builds a speed report for each client with your logo and colors. It shows what
+            you fixed, not just what broke, so the retainer is easy to justify.
+          </p>
+          <ul class="mt-6 space-y-2 text-[0.9375rem]">
+            <li class="flex gap-3"><span class="mt-2.5 h-px w-3 shrink-0 bg-ink" aria-hidden="true"></span>Send as a PDF or a private link</li>
+            <li class="flex gap-3"><span class="mt-2.5 h-px w-3 shrink-0 bg-ink" aria-hidden="true"></span>No Loadline branding anywhere</li>
+          </ul>
+        </div>
+        <div class="lg:col-span-6 lg:col-start-7">
+          <ReportMini />
+        </div>
+      </article>
+
+      <!-- Dashboard: full-width visual under a split heading -->
+      <article>
+        <div class="grid grid-cols-1 gap-x-16 gap-y-4 lg:grid-cols-12">
+          <h3 class="text-[1.625rem] leading-tight font-semibold tracking-[-0.025em] lg:col-span-4">
+            One list, sorted by what needs you
+          </h3>
+          <p class="text-muted lg:col-span-6 lg:col-start-6">
+            All your client sites on one screen, with the ones that got worse at the top. The Monday check-in takes two minutes,
+            and nothing slips because it was on page three.
+          </p>
+        </div>
+        <div class="mt-10">
+          <SiteList />
+        </div>
+      </article>
+    </div>
+
+    <figure id="sample-report" class="mt-28 scroll-mt-24 lg:mt-36">
+      <figcaption class="mb-6 flex flex-col justify-between gap-2 sm:flex-row sm:items-baseline">
+        <span class="text-heading text-balance">A sample report, as your client sees it</span>
+        <span class="text-sm text-muted">Fictional client and agency. Your logo and colors replace theirs.</span>
+      </figcaption>
+      <a href={fullReport.src} class="group block rounded-[var(--radius-card)]">
+        <Picture
+          src={sampleReport}
+          formats={['avif', 'webp']}
+          fallbackFormat="webp"
+          widths={[640, 960, 1280, 1800, 2400]}
+          sizes="(min-width: 1200px) 1136px, calc(100vw - 2.5rem)"
+          alt="Two pages of a white-label October speed report for Brightwater Dental, prepared by Northfold Studio. Page one shows LCP 1.9 seconds, INP 140 milliseconds and CLS 0.03, all good, with a 12-week LCP trend and fixes made. Page two lists each page's metrics and what to watch next month."
+          loading="lazy"
+          decoding="async"
+          class="h-auto w-full rounded-[var(--radius-card)] border border-line"
+        />
+        <span class="mt-3 inline-block text-sm text-muted underline decoration-line-strong underline-offset-4 group-hover:text-ink">
+          Open the report at full size
+        </span>
+      </a>
+    </figure>
+  </div>
+</section>

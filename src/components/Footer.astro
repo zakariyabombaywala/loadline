@@ -1,0 +1,72 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../lib/site';
+
+const columns = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Features', href: '/#features' },
+      { label: 'Pricing', href: '/#pricing' },
+      { label: 'Sample report', href: '/#sample-report' },
+      { label: 'FAQ', href: '/#faq' },
+    ],
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About', href: '/about' },
+      { label: 'Changelog', href: '/changelog' },
+      { label: 'Contact', href: '/contact' },
+    ],
+  },
+  {
+    title: 'Legal',
+    links: [
+      { label: 'Privacy', href: '/privacy' },
+      { label: 'Terms', href: '/terms' },
+      { label: 'Security', href: '/security' },
+    ],
+  },
+];
+
+const year = new Date().getFullYear();
+---
+
+<footer class="defer-render border-t border-line" style="--cis: 750px; --cis-md: 420px; --cis-lg: 400px">
+  <div class="wrap py-16">
+    <div class="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-12">
+      <div class="col-span-2 md:col-span-5">
+        <a href="/" class="-m-1 inline-block rounded p-1 text-ink" aria-label="Loadline home">
+          <Logo />
+        </a>
+        <p class="mt-4 max-w-xs text-sm text-muted">Website speed monitoring for agencies that manage 10 to 200 client sites.</p>
+      </div>
+
+      {
+        columns.map((col) => (
+          <nav aria-label={col.title} class="md:col-span-2">
+            <h2 class="text-sm font-semibold">{col.title}</h2>
+            <ul class="mt-4 space-y-3 text-sm">
+              {col.links.map((link) => (
+                <li>
+                  <a href={link.href} class="text-muted transition-colors hover:text-ink">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div class="mt-16 flex flex-col gap-3 border-t border-line pt-8 text-sm text-muted md:flex-row md:justify-between">
+      <p>© {year} Loadline. All rights reserved.</p>
+      <p>
+        Loadline is a concept project designed and built by
+        <a class="link" href={site.authorUrl}>{site.author}</a>.
+      </p>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,131 @@
+---
+import Logo from './Logo.astro';
+import { site } from '../lib/site';
+
+const nav = [
+  { label: 'Features', href: '/#features' },
+  { label: 'Pricing', href: '/#pricing' },
+  { label: 'FAQ', href: '/#faq' },
+];
+---
+
+<header class="site-header sticky top-0 z-40 bg-canvas/97">
+  <div class="wrap flex h-16 items-center gap-6">
+    <a href="/" class="-m-1 shrink-0 rounded p-1 text-ink" aria-label="Loadline home">
+      <Logo />
+    </a>
+
+    <nav aria-label="Main" class="ml-6 hidden md:block">
+      <ul class="flex items-center gap-7 text-[0.9375rem]">
+        {
+          nav.map((item) => (
+            <li>
+              <a href={item.href} class="text-muted transition-colors hover:text-ink">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="ml-auto flex items-center gap-2 sm:gap-5">
+      <a href={site.loginHref} class="hidden text-[0.9375rem] text-muted transition-colors hover:text-ink md:inline">
+        Log in
+      </a>
+      <a href={site.signupHref} class="btn btn-primary btn-sm">Start free trial</a>
+      <button
+        type="button"
+        class="menu-toggle -mr-2 inline-flex size-11 items-center justify-center rounded-md text-ink md:hidden"
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+        data-menu-toggle
+      >
+        <span class="sr-only">Menu</span>
+        <svg class="size-5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" aria-hidden="true">
+          <path class="menu-line-a" d="M3 6.5h14" />
+          <path class="menu-line-b" d="M3 13.5h14" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="border-b border-line bg-canvas md:hidden" hidden data-menu>
+    <nav aria-label="Mobile" class="wrap pb-6">
+      <ul class="flex flex-col text-lg">
+        {
+          nav.map((item) => (
+            <li class="border-b border-line">
+              <a href={item.href} class="block py-3.5 text-ink">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+        <li>
+          <a href={site.loginHref} class="block py-3.5 text-ink">Log in</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  /* The bottom rule fades in once the page scrolls: a scroll-driven animation, no JS. */
+  .site-header {
+    box-shadow: 0 1px 0 transparent;
+  }
+  @supports (animation-timeline: scroll()) {
+    .site-header {
+      animation: header-rule linear both;
+      animation-timeline: scroll();
+      animation-range: 0 64px;
+    }
+  }
+  @supports not (animation-timeline: scroll()) {
+    .site-header {
+      box-shadow: 0 1px 0 var(--color-line);
+    }
+  }
+  @keyframes header-rule {
+    to {
+      box-shadow: 0 1px 0 var(--color-line);
+    }
+  }
+
+  .menu-line-a,
+  .menu-line-b {
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 180ms ease;
+  }
+  .menu-toggle[aria-expanded='true'] .menu-line-a {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+  .menu-toggle[aria-expanded='true'] .menu-line-b {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const menu = document.querySelector<HTMLElement>('[data-menu]');
+
+  if (toggle && menu) {
+    const setOpen = (open: boolean, returnFocus = false) => {
+      toggle.setAttribute('aria-expanded', String(open));
+      menu.hidden = !open;
+      if (!open && returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    menu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && !menu.hidden) setOpen(false, true);
+    });
+    // Close if the viewport grows past the mobile breakpoint while open.
+    matchMedia('(min-width: 48rem)').addEventListener('change', (e) => e.matches && setOpen(false));
+  }
+</script>

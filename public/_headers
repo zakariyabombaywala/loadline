@@ -1,0 +1,16 @@
+# Cloudflare Pages headers. https://developers.cloudflare.com/pages/configuration/headers/
+
+# Fingerprinted build assets never change: cache them for a year.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/og.png
+  Cache-Control: public, max-age=86400
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Cross-Origin-Opener-Policy: same-origin
